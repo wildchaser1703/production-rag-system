@@ -1,4 +1,5 @@
 from typing import Any
+
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 from langchain_core.vectorstores import VectorStoreRetriever
@@ -41,7 +42,9 @@ class VectorManager:
         
         log.success("Vector store initialized successfully")
 
-    def get_retriever(self, search_kwargs: dict[str, Any] | None = None) -> VectorStoreRetriever:
+    def get_retriever(
+        self, search_kwargs: dict[str, Any] | None = None
+    ) -> VectorStoreRetriever:
         """
         Returns a retriever interface for the vector store.
         """
