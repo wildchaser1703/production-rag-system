@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, cast
 
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
@@ -54,6 +54,7 @@ class VectorManager:
         if not self.vector_store:
             raise RuntimeError("Failed to initialize vector store")
 
-        return self.vector_store.as_retriever(
+        retriever = self.vector_store.as_retriever(
             search_kwargs=search_kwargs or {"k": 4}
         )
+        return retriever  # type: ignore[no-any-return]

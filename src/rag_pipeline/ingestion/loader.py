@@ -1,3 +1,4 @@
+from typing import cast
 
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_core.documents import Document
@@ -40,4 +41,4 @@ class DocumentProcessor:
         log.info("Splitting documents into chunks")
         chunks = self.text_splitter.split_documents(documents)
         log.success(f"Created {len(chunks)} chunks")
-        return chunks
+        return chunks  # type: ignore[no-any-return]
