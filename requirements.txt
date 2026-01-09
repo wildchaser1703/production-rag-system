@@ -159,6 +159,8 @@ langchain-core==0.1.23
     #   langchain-openai
 langchain-openai==0.0.2.post1
     # via production-rag-system (pyproject.toml)
+langchain-text-splitters==0.0.1
+    # via production-rag-system (pyproject.toml)
 langsmith==0.0.87
     # via
     #   langchain
