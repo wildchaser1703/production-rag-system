@@ -1,8 +1,10 @@
-from typing import List
+
 from langchain_community.document_loaders import WebBaseLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
-from src.rag_pipeline.utils.logger import log
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+from rag_pipeline.utils.logger import log
+
 
 class DocumentProcessor:
     """
@@ -17,7 +19,7 @@ class DocumentProcessor:
             is_separator_regex=False,
         )
 
-    def load_from_urls(self, urls: List[str]) -> List[Document]:
+    def load_from_urls(self, urls: list[str]) -> list[Document]:
         """
         Loads document content from a list of URLs.
         """
@@ -31,7 +33,7 @@ class DocumentProcessor:
             log.error(f"Failed to load documents: {str(e)}")
             return []
 
-    def split_documents(self, documents: List[Document]) -> List[Document]:
+    def split_documents(self, documents: list[Document]) -> list[Document]:
         """
         Splits documents into smaller chunks for vector storage.
         """

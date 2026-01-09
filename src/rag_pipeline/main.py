@@ -1,9 +1,10 @@
-from src.rag_pipeline.ingestion.loader import DocumentProcessor
-from src.rag_pipeline.retrieval.vector_store import VectorManager
-from src.rag_pipeline.generation.generator import RAGGenerator
-from src.rag_pipeline.utils.logger import log
+from rag_pipeline.generation.generator import RAGGenerator
+from rag_pipeline.ingestion.loader import DocumentProcessor
+from rag_pipeline.retrieval.vector_store import VectorManager
+from rag_pipeline.utils.logger import log
 
-def run_pipeline(urls: list[str], query: str):
+
+def run_pipeline(urls: list[str], query: str) -> None:
     """
     Executes a full end-to-end RAG pipeline run.
     """

@@ -1,9 +1,12 @@
-from typing import List
-from langchain_openai import OpenAIEmbeddings
+from typing import Any
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
-from src.rag_pipeline.config import settings
-from src.rag_pipeline.utils.logger import log
+from langchain_core.vectorstores import VectorStoreRetriever
+from langchain_openai import OpenAIEmbeddings
+
+from rag_pipeline.config import settings
+from rag_pipeline.utils.logger import log
+
 
 class VectorManager:
     """
@@ -12,12 +15,11 @@ class VectorManager:
     
     def __init__(self) -> None:
         self.embeddings = OpenAIEmbeddings(
-            model=settings.embedding_model,
-            openai_api_key=settings.openai_api_key
+            model=settings.embedding_model
         )
         self.vector_store: Chroma | None = None
 
-    def initialize_store(self, documents: List[Document] | None = None) -> None:
+    def initialize_store(self, documents: list[Document] | None = None) -> None:
         """
         Initializes or loads the Chroma vector store.
         """
@@ -39,13 +41,16 @@ class VectorManager:
         
         log.success("Vector store initialized successfully")
 
-    def get_retriever(self, search_kwargs: dict | None = None):
+    def get_retriever(self, search_kwargs: dict[str, Any] | None = None) -> VectorStoreRetriever:
         """
         Returns a retriever interface for the vector store.
         """
         if not self.vector_store:
             self.initialize_store()
             
+        if not self.vector_store:
+            raise RuntimeError("Failed to initialize vector store")
+
         return self.vector_store.as_retriever(
             search_kwargs=search_kwargs or {"k": 4}
         )

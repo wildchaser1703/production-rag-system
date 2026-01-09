@@ -1,13 +1,16 @@
-from typing import List, Dict
+from typing import Any, cast
+
 from datasets import Dataset
 from ragas import evaluate
 from ragas.metrics import (
-    faithfulness,
     answer_relevance,
     context_precision,
     context_recall,
+    faithfulness,
 )
-from src.rag_pipeline.utils.logger import log
+
+from rag_pipeline.utils.logger import log
+
 
 class RAGEvaluator:
     """
@@ -24,11 +27,11 @@ class RAGEvaluator:
 
     def evaluate_pipeline(
         self, 
-        questions: List[str], 
-        answers: List[str], 
-        contexts: List[List[str]], 
-        ground_truths: List[str]
-    ) -> Dict:
+        questions: list[str], 
+        answers: list[str], 
+        contexts: list[list[str]], 
+        ground_truths: list[str]
+    ) -> dict[str, Any]:
         """
         Runs RAGAS evaluation on the provided data.
         """
@@ -49,7 +52,7 @@ class RAGEvaluator:
                 metrics=self.metrics,
             )
             log.success("Evaluation completed successfully")
-            return results
+            return cast(dict[str, Any], results)
         except Exception as e:
             log.error(f"Evaluation failed: {str(e)}")
             return {}

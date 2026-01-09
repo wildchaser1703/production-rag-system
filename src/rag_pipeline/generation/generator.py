@@ -1,10 +1,12 @@
-from typing import Any
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
+from typing import Any, cast
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
-from src.rag_pipeline.config import settings
-from src.rag_pipeline.utils.logger import log
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import Runnable, RunnablePassthrough
+from langchain_openai import ChatOpenAI
+
+from rag_pipeline.config import settings
+from rag_pipeline.utils.logger import log
+
 
 class RAGGenerator:
     """
@@ -15,7 +17,6 @@ class RAGGenerator:
         self.llm = ChatOpenAI(
             model=settings.llm_model,
             temperature=0,
-            openai_api_key=settings.openai_api_key
         )
         self.prompt = self._setup_prompt()
 
@@ -26,7 +27,8 @@ class RAGGenerator:
         template = """
         You are an advanced AI assistant for technical documentation. 
         Use the following pieces of retrieved context to answer the question. 
-        If you don't know the answer, just say that you don't know, don't try to make up an answer.
+        If you don't know the answer, just say that you don't know, 
+        don't try to make up an answer.
         Use professional and technical language.
 
         Context:
@@ -38,13 +40,13 @@ class RAGGenerator:
         """
         return ChatPromptTemplate.from_template(template)
 
-    def get_chain(self, retriever: Any):
+    def get_chain(self, retriever: Any) -> Runnable[Any, Any]:
         """
         Builds the LangChain RAG chain.
         """
         log.info("Building RAG chain")
         
-        def format_docs(docs):
+        def format_docs(docs: list[Any]) -> str:
             return "\n\n".join(doc.page_content for doc in docs)
 
         rag_chain = (
@@ -64,4 +66,4 @@ class RAGGenerator:
         chain = self.get_chain(retriever)
         response = chain.invoke(query)
         log.success("Response generated successfully")
-        return response
+        return cast(str, response)
