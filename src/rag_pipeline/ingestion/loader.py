@@ -1,4 +1,3 @@
-from typing import cast
 
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_core.documents import Document

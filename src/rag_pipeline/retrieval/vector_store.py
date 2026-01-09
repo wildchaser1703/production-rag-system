@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any
 
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
